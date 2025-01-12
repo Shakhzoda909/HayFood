@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --swiper-nav-color: #ffffff;
+    --swiper-nav-background: rgba(0, 0, 0, 0.5);
+    --lightgreen: #80ba04;
+    --lightgreen-opacity: rgba(128, 186, 4, 0.5);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: white !important;
+}
+
+/* Optional: If you want to change the background of the buttons */
+.swiper-button-next,
+.swiper-button-prev {
+    background: var(--lightgreen-opacity);
+    padding: 30px;
+    border-radius: 50%;
+}
+
+/* Optional: Change the size of the arrows */
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 20px !important;
+}
+
+
+
+.swiper-pagination-bullet {
+    background: var(--lightgreen) !important;
+    height: 10px;
+    width: 10px;
+}
