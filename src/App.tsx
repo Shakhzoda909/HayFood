@@ -11,6 +11,7 @@ import { Product } from "./contexts/cart";
 function App() {
   const [items, setItems] = useState<Product[]>([]);
 
+  console.log('Sardor')
   return (
     <BrowserRouter>
       <Routes>
