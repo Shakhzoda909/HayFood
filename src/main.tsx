@@ -4,11 +4,14 @@ import App from './App'
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 import { CartProvider } from './contexts/cart'
+import { AuthProvider } from './contexts/auth'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <CartProvider>
-      <App />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )

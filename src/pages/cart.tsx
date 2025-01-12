@@ -1,8 +1,7 @@
 import { useCart } from "../contexts/cart";
-import { Product } from "../contexts/cart";
 
-const Cart = ({items, setItems}: {items: Product[], setItems: (items: Product[]) => void}) => {
-    // const { items } = useCart();
+const Cart = () => {
+    const { items } = useCart();
     
     return (
         <div>

@@ -13,8 +13,6 @@ const Slider = () => {
                 modules={[Autoplay, Navigation, Pagination]}
                 slidesPerView={"auto"}
                 centeredSlides={true}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
                 loop={true}
                 navigation={true}
                 pagination={{

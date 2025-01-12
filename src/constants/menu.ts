@@ -5,6 +5,7 @@ export interface MenuItem {
     description: string;
     image: string;
     badges?: string[];
+    quantity?: number;
 }
 
 export interface MenuCategory {
@@ -24,7 +25,8 @@ export const menuData: MenuCategory[] = [
                 price: 29.99,
                 description: "2 burgers, 2 donars, fries, and 4 drinks",
                 image: "https://placekitten.com/400/300",
-                badges: ["BESTSELLER", "NEW"]
+                badges: ["BESTSELLER", "NEW"],
+                quantity: 1
             },
             {
                 id: 102,

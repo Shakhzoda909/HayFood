@@ -1,14 +1,15 @@
 import Navbar from "../components/navbar";
 import Slider from "../components/slider";
 import Menu from "../components/menu";
-import { Product } from "../contexts/cart";
+import ServiceType from "../components/service-type";
 
-const Home = ({ items, setItems }: { items: Product[], setItems: (items: Product[]) => void }) => {
+const Home = () => {
     return (
         <div>
             <Navbar />
             <Slider />
-            <Menu items={items} setItems={setItems}/>
+            <ServiceType />
+            <Menu />
         </div>
     )
 }

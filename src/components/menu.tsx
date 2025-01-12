@@ -1,23 +1,28 @@
-import { MinusCircle, PlusCircle } from "lucide-react";
 import { menuData } from "../constants/menu";
 import { useCart } from "../contexts/cart";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Product } from "../contexts/cart";
+import { useState, useRef } from "react";
+import CartSheet from "./cart-sheet";
 
-const Menu = ({items, setItems}: {items: Product[], setItems: (items: Product[]) => void}) => {
-    const navigate = useNavigate();
-    // const { addToCart, removeFromCart, items } = useCart();
+const Menu = () => {
+    const [open, setOpen] = useState(false);
+
+    const { addToCart, removeFromCart, items } = useCart();
 
     const [activeCategory, setActiveCategory] = useState(menuData[0].id);
-
-    const addToCart = (product: Product) => {
-        setItems([...items, product]);
-      };
     
-      const removeFromCart = (productId: number) => {
-        setItems(items.filter(item => item.id !== productId));
-      };
+    const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+    const handleCategoryClick = (categoryId: string) => {
+        setActiveCategory(Number(categoryId));
+        const element = categoryRefs.current[categoryId];
+        if (element) {
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({
+                top: elementPosition - 80,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     return (
         <div>
@@ -27,23 +32,28 @@ const Menu = ({items, setItems}: {items: Product[], setItems: (items: Product[])
                         <span 
                             key={item.id}
                             className={`px-[20px] py-[5px] bg-[#f4f4f4] rounded-[100px] ${activeCategory === item.id ? 'bg-lightgreen text-white' : ''} cursor-pointer hover:bg-[var(--lightgreen-opacity)] hover:text-white`}
-                            onClick={() => setActiveCategory(item.id)}
+                            onClick={() => handleCategoryClick(item.id.toString())}
                         >
                             {item.name}
                         </span>
                     ))}
                 </div>
-                <button onClick={() => navigate('/cart')} className="bg-lightgreen text-white px-[20px] py-[10px] rounded-[10px]">
+                <CartSheet open={open} setOpen={setOpen}/>
+                <button onClick={() => setOpen(true)} className="bg-lightgreen text-white px-[20px] py-[10px] rounded-[10px]">
                     Savatcha | {items.length}
                 </button>
             </div>
             <div className="max-w-[1200px] mx-auto mb-[100px]">
                 {menuData.map((category) => (
-                    <div key={category.id} className="mb-[40px]">
+                    <div 
+                        key={category.id} 
+                        ref={el => categoryRefs.current[category.id] = el}
+                        className="mb-[40px]"
+                    >
                         <p className="text-[20px] font-bold">{category.name}</p>
                         <div className="grid grid-cols-4 gap-[20px]">
                             {category.items.map((product) => (
-                                <div key={product.id} className="relative bg-white p-[20px] rounded-[16px] drop-shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer">
+                                <div key={product.id} className="relative bg-white p-[20px] rounded-[16px] drop-shadow-xl transition-transform duration-300 hover:scale-105">
                                     <img className="w-full h-[200px] object-cover" src={"https://i.pinimg.com/474x/22/29/0d/22290dcfd246cc18d795fe19750e6e68.jpg"} alt="" />
                                     <p className="text-[16px] font-bold mt-[10px]">{product.name}</p>
                                     <p className="text-[14px] text-[#808080]">{product.description}</p>
@@ -56,14 +66,14 @@ const Menu = ({items, setItems}: {items: Product[], setItems: (items: Product[])
                                     {items.some(item => item.id === product.id) ? (
                                         <button
                                             onClick={() => removeFromCart(product.id)}
-                                            className="bg-red-500 text-white px-[20px] py-[10px] rounded-[10px] absolute bottom-[8px] right-[8px]"
+                                            className="w-full border-red-500 border-2 text-red-500 px-[20px] py-[10px] rounded-[10px]"
                                         >
                                             Savatdan o'chirish
                                         </button>
                                     ) : (
                                         <button
                                             onClick={() => addToCart(product)}
-                                            className="bg-lightgreen text-white px-[20px] py-[10px] rounded-[10px] absolute bottom-[8px] right-[8px]"
+                                            className="w-full border-[var(--lightgreen)] border-2 text-lightgreen px-[20px] py-[10px] rounded-[10px]"
                                         >
                                             Savatga qo'shish
                                         </button>
