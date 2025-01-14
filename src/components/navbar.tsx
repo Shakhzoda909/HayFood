@@ -6,9 +6,14 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { useAuth } from "@/contexts/auth";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-[1180px] mx-auto w-full py-[15px] px-[20px] flex justify-between items-center">
@@ -72,9 +77,26 @@ const Navbar = () => {
         </span>
       </div>
       {user ? (
-       <span>{user.name}</span>
-      ) : (
-        <button className="bg-lightgreen text-white px-[20px] py-[10px] rounded-[10px]">
+         <TooltipProvider delayDuration={200}>
+         <Tooltip>
+           <TooltipTrigger>
+             <div className="flex items-center gap-[5px]">
+               <span>{user.name}</span>
+              
+             </div>
+           </TooltipTrigger>
+           <TooltipContent side="bottom"
+           className="flex gap-[20px] bg-gray-800 border-none border-0 text-white" >
+           <div>
+            <p>Telefon raqam</p>
+            <p>{user.phone}</p>
+            <button onClick={logout}>Chiqish</button>
+           </div>
+           </TooltipContent>
+         </Tooltip>
+         </TooltipProvider>
+      ) : ( 
+        <button onClick={() => navigate('/login')} className="bg-lightgreen text-white px-[20px] py-[10px] rounded-[10px]">
           Kirish
         </button>
       )}
