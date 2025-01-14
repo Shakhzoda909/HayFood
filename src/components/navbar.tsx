@@ -1,4 +1,4 @@
-import { Star, StarHalf } from "lucide-react";
+import { Check, Star, StarHalf } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -7,26 +7,64 @@ import {
 } from "./ui/tooltip";
 import { useAuth } from "@/contexts/auth";
 import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { useState } from "react";
 
 
-
+const cities = [
+  "Toshkent",
+  "Andijon",
+  "Namangan",
+  "Farg'ona",
+]
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  const [showCities, setShowCities] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("Toshkent");
+
+  const handleCityClick = (city: string) => {
+    setSelectedCity(city);
+    setShowCities(false);
+  }
+
   return (
+
+
     <div className="max-w-[1180px] mx-auto w-full py-[15px] px-[20px] flex justify-between items-center">
-      <h1 className="text-[40px] text-[#80ba04] font-bold">HAY FOOD</h1>
+      <h1 className="text-[40px] text-[#80ba04] font-bold cursor-pointer">HAY FOOD</h1>
       <div>
         <div>
           <span className="text-[18px] text-black font-[500] leading-5">
             Yetkazib berish
           </span>
-          <span className="text-[18px] text-[var(--lightgreen)] font-[500] leading-5 cursor-pointer">
-            {" "}
-            Toshkent
-          </span>
+          <Dialog open={showCities} onOpenChange={setShowCities}>
+
+            <span className="text-[18px] text-[var(--lightgreen)] font-[500] leading-5 cursor-pointer pl-[4px]" onClick={() => setShowCities(true)}>
+              {selectedCity} 
+            </span>
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Yetkazib berish manzilini tanlang</DialogTitle>
+              </DialogHeader>
+              {cities.map((city) => (
+                <div key={city} className="flex items-center gap-[5px]"> 
+                  <span onClick={() => handleCityClick(city)}>{city}</span> {selectedCity === city && <Check className="text-[var(--lightgreen)]" size={18} />}
+                </div>
+              ))}
+            </DialogContent>
+          </Dialog>
         </div>
         <TooltipProvider delayDuration={200}>
           <Tooltip>
@@ -77,25 +115,25 @@ const Navbar = () => {
         </span>
       </div>
       {user ? (
-         <TooltipProvider delayDuration={200}>
-         <Tooltip>
-           <TooltipTrigger>
-             <div className="flex items-center gap-[5px]">
-               <span>{user.name}</span>
-              
-             </div>
-           </TooltipTrigger>
-           <TooltipContent side="bottom"
-           className="flex gap-[20px] bg-gray-800 border-none border-0 text-white" >
-           <div>
-            <p>Telefon raqam</p>
-            <p>{user.phone}</p>
-            <button onClick={logout}>Chiqish</button>
-           </div>
-           </TooltipContent>
-         </Tooltip>
-         </TooltipProvider>
-      ) : ( 
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="flex items-center gap-[5px]">
+                <span>{user.name}</span>
+
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="bottom"
+              className="flex gap-[20px] bg-gray-800 border-none border-0 text-white" >
+              <div>
+                <p>Telefon raqam</p>
+                <p>{user.phone}</p>
+                <button onClick={logout}>Chiqish</button>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
         <button onClick={() => navigate('/login')} className="bg-lightgreen text-white px-[20px] py-[10px] rounded-[10px]">
           Kirish
         </button>

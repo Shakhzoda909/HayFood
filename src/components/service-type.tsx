@@ -1,18 +1,33 @@
 import { Pen } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import { useState } from "react";
 
-const ServiceType = () => {
-  const [showCities, setShowCities] = useState(false);
 
-  const cities = [
-    "Toshkent",
-    "Samarqand",
-    "Buxoro",
-    "Andijon",
-    "Namangan",
-    "Farg'ona",
-  ];
+const ServiceType = () => {
+  const [addresses, setAddresses] = useState<string[]>([]);
+  const [addressName, setAddressName] = useState("");
+  const [addAddress, setAddAddress] = useState(false);
+
+  const handleAddAddress = () => {
+    setAddresses([...addresses, addressName]);
+    setAddressName("");
+    setAddAddress(false);
+  
+  }
+  console.log(addresses);
+
 
   return (
 
@@ -41,33 +56,46 @@ const ServiceType = () => {
         >
           <div
             className="bg-red-50 border rounded-xl text-red-500 py-[10px] px-[16px] cursor-pointer"
-            onClick={() => setShowCities(!showCities)}
-          >
-            <div className="flex justify-between items-center gap-[10px]">
-              <span className="text-[16px]">
-                Yetkazib berish manzilini tanlang!
-              </span>
-              <Pen className="w-[14px] h-[14px]" />
-            </div>
-          </div>
 
-          {showCities && (
-            <div className="mt-2 border rounded-xl p-4">
-              <ul className="space-y-2">
-                {cities.map((city) => (
-                  <li
-                    key={city}
-                    className="cursor-pointer hover:text-red-500 transition-colors"
-                    onClick={() => {
-                      setShowCities(false);
-                    }}
-                  >
-                    {city}
-                  </li>
+          >
+            <Dialog>
+              <DialogTrigger asChild>
+
+                <div className="flex justify-between items-center gap-[10px]">
+                  <span className="text-[16px] ">
+                    Yetkazib berish manzilini tanlang!
+                  </span>
+                  <Pen className="w-[14px] h-[14px]" />
+                </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle className="text-left"> Yetkazib berish manzilini tanlang</DialogTitle>
+
+                </DialogHeader>
+                {addresses.map((address) => (
+                  <div key={address}>
+                    <span>{address}</span>
+                  </div>
                 ))}
-              </ul>
-            </div>
-          )}
+                <Button variant={"default"} onClick={() => setAddAddress(true)}>
+                  Yangi manzil qo'shish
+                </Button>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <Dialog open={addAddress} onOpenChange={setAddAddress}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Yangi manzil qo'shish</DialogTitle>
+              </DialogHeader>
+              <Label>Manzil nomi</Label>
+              <Input placeholder="Manzil nomi" value={addressName} onChange={(e) => setAddressName(e.target.value)} />
+              <DialogFooter>
+                <Button variant={"default"} onClick={handleAddAddress} disabled={!addressName}>Saqlash </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </TabsContent>
         <TabsContent
           value="password"
