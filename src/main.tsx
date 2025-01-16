@@ -5,12 +5,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 import { CartProvider } from './contexts/cart'
 import { AuthProvider } from './contexts/auth'
+import { Toaster } from "@/components/ui/toaster"
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <CartProvider>
         <App />
+        <Toaster />
       </CartProvider>
     </AuthProvider>
   </React.StrictMode>,

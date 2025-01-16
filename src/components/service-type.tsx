@@ -13,21 +13,41 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast"
+import { useAuth } from "@/contexts/auth";
+
 
 
 const ServiceType = () => {
+  const { user } = useAuth()
+  const { toast } = useToast()
   const [addresses, setAddresses] = useState<string[]>([]);
   const [addressName, setAddressName] = useState("");
   const [addAddress, setAddAddress] = useState(false);
+  const [myAddress, setMyAddress] = useState(false);
 
   const handleAddAddress = () => {
+
     setAddresses([...addresses, addressName]);
     setAddressName("");
     setAddAddress(false);
-  
+    toast({
+      title: "Manzil qo'shildi",
+      description: "Manzil qo'shildi",
+
+    })
+
+  }
+  const handleClick = () => {
+    if (!user) {
+      toast({
+        title: "Manzil qo'shish uchun login qiling",
+        variant: "destructive",
+      })
+    }
   }
   console.log(addresses);
-
+  console.log(user);
 
   return (
 
@@ -58,16 +78,16 @@ const ServiceType = () => {
             className="bg-red-50 border rounded-xl text-red-500 py-[10px] px-[16px] cursor-pointer"
 
           >
-            <Dialog>
-              <DialogTrigger asChild>
+            <Dialog open={myAddress} onOpenChange={setMyAddress}>
 
-                <div className="flex justify-between items-center gap-[10px]">
-                  <span className="text-[16px] ">
-                    Yetkazib berish manzilini tanlang!
-                  </span>
-                  <Pen className="w-[14px] h-[14px]" />
-                </div>
-              </DialogTrigger>
+
+              <div onClick={handleClick} className="flex justify-between items-center gap-[10px]">
+                <span className="text-[16px] ">
+                  Yetkazib berish manzilini tanlang!
+                </span>
+                <Pen className="w-[14px] h-[14px]" />
+              </div>
+
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle className="text-left"> Yetkazib berish manzilini tanlang</DialogTitle>
